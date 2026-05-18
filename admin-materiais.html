@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Materiais Didáticos – Admin</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+
+<body class="bg-gray-100">
+
+  <!-- SIDEBAR S3 (O MESMO DO TEU ADMIN) -->
+  <aside id="sidebar"
+    class="fixed top-0 left-0 h-full w-64 bg-white shadow-xl border-r border-gray-200 flex flex-col
+           transition-transform duration-300 -translate-x-full md:translate-x-0 z-50">
+
+    <div class="px-6 py-6 border-b border-gray-200 flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-bold text-red-600">AFF</h1>
+        <p class="text-gray-500 text-sm">Painel Adm</p>
+      </div>
+
+      <!-- Botão fechar (mobile) -->
+      <button onclick="toggleSidebar()" class="md:hidden text-gray-600 text-2xl">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <nav class="flex-1 px-4 py-6 space-y-1">
+
+      <button onclick="go('dashboard.html')"
+        class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-gray-700 hover:bg-gray-100 transition">
+        <i class="fa-solid fa-chart-line text-xl"></i>
+        <span>Dashboard</span>
+      </button>
+
+      <p class="text-xs text-gray-400 uppercase mt-6 mb-2 px-4">Conteúdo</p>
+<button onclick="go('cursos.html')"
+      class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-gray-700 hover:bg-gray-100 transition">
+      <i class="fa-solid fa-book text-xl"></i>
+      <span>Cursos</span>
+    </button>
+
+    <button onclick="go('produtos.html')"
+      class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-gray-700 hover:bg-gray-100 transition">
+      <i class="fa-solid fa-box text-xl"></i>
+      <span>Produtos</span>
+    </button>
+
+    <button onclick="go('marketplace.html')"
+      class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-gray-700 hover:bg-gray-100 transition">
+      <i class="fa-solid fa-store text-xl"></i>
+      <span>Marketplace</span>
+    </button>
+
+    <p class="text-xs text-gray-400 uppercase mt-6 mb-2 px-4">Gestão</p>
+
+    <button onclick="go('usuarios.html')"
+      class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-gray-700 hover:bg-gray-100 transition">
+      <i class="fa-solid fa-users text-xl"></i>
+      <span>Usuários</span>
+    </button>
+
+    <button onclick="go('notificacoes.html')"
+      class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-gray-700 hover:bg-gray-100 transition">
+      <i class="fa-solid fa-bell text-xl"></i>
+      <span>Notificações</span>
+    </button>
+
+    <button onclick="go('compras.html')"
+      class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-gray-700 hover:bg-gray-100 transition">
+      <i class="fa-solid fa-credit-card text-xl"></i>
+      <span>Compras</span>
+    </button>
+
+      <button onclick="go('admin-materiais.html')"
+        class="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-red-600 text-white transition">
+        <i class="fa-solid fa-file text-xl"></i>
+        <span>Materiais</span>
+      </button>
+      
+    <button onclick="go('logs.html')"
+      class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-gray-700 hover:bg-gray-100 transition">
+      <i class="fa-solid fa-file-lines text-xl"></i>
+      <span>Logs</span>
+    </button>
+
+    </nav>
+
+    <div class="px-6 py-4 border-t border-gray-200">
+      <button onclick="logout()"
+        class="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg transition">
+        Sair
+      </button>
+    </div>
+
+  </aside>
+
+  <!-- APPBAR -->
+  <header class="fixed top-0 left-0 right-0 md:ml-64 h-16 bg-white shadow flex items-center px-6 z-40">
+    <button onclick="toggleSidebar()" class="md:hidden text-2xl text-gray-700 mr-4">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <h2 class="text-xl font-semibold text-gray-800">Materiais Didáticos</h2>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="md:ml-64 mt-20 px-6 pb-20">
+
+    <!-- CARD DE ADIÇÃO -->
+    <div class="bg-white p-8 rounded-3xl shadow mb-10">
+      <h3 class="text-2xl font-bold mb-6">Adicionar Material</h3>
+
+      <div class="grid md:grid-cols-2 gap-6">
+
+        <div>
+          <label class="font-semibold">Título</label>
+          <input id="titulo" type="text" class="w-full p-3 border rounded-xl mt-2" placeholder="Ex: Introdução ao HTML">
+        </div>
+
+        <div>
+          <label class="font-semibold">Tipo do Ficheiro</label>
+          <select id="tipo" class="w-full p-3 border rounded-xl mt-2">
+            <option value="pdf">PDF</option>
+            <option value="doc">Word (.doc)</option>
+            <option value="docx">Word (.docx)</option>
+            <option value="ppt">PowerPoint (.ppt)</option>
+            <option value="pptx">PowerPoint (.pptx)</option>
+            <option value="zip">ZIP</option>
+            <option value="jpg">Imagem (.jpg)</option>
+            <option value="png">Imagem (.png)</option>
+          </select>
+        </div>
+
+      </div>
+
+      <div class="mt-6">
+        <label class="font-semibold">Descrição</label>
+        <textarea id="descricao" rows="3" class="w-full p-3 border rounded-xl mt-2" placeholder="Descrição do material"></textarea>
+      </div>
+
+      <div class="mt-6">
+        <label class="font-semibold">Link do Google Drive</label>
+        <input id="link" type="text" class="w-full p-3 border rounded-xl mt-2" placeholder="Cole o link do Drive aqui">
+      </div>
+
+      <button onclick="salvarMaterial()"
+        class="mt-8 w-full bg-red-600 text-white py-4 rounded-xl font-semibold hover:bg-red-500">
+        Salvar Material
+      </button>
+    </div>
+
+    <!-- LISTA -->
+    <h3 class="text-2xl font-bold mb-4">Materiais Existentes</h3>
+
+    <div id="listaMateriais" class="space-y-4"></div>
+
+  </main>
+
+  <!-- JS DO SIDEBAR -->
+  <script>
+    function toggleSidebar() {
+      document.getElementById("sidebar").classList.toggle("-translate-x-full");
+    }
+    function go(url) { location.href = url; }
+  </script>
+
+  <!-- FIREBASE -->
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+  <script src="firebase-config.js"></script>
+
+  <script>
+    const db = firebase.database();
+
+    function transformarLinkDrive(url) {
+      if (url.includes("uc?export=download")) return url;
+      const match = url.match(/\/d\/(.*?)\//);
+      if (!match) return url;
+      return `https://drive.google.com/uc?export=download&id=${match[1]}`;
+    }
+
+    function salvarMaterial() {
+      const titulo = document.getElementById("titulo").value.trim();
+      const descricao = document.getElementById("descricao").value.trim();
+      const link = transformarLinkDrive(document.getElementById("link").value.trim());
+      const tipo = document.getElementById("tipo").value;
+
+      if (!titulo || !descricao || !link) {
+        alert("Preencha todos os campos.");
+        return;
+      }
+
+      db.ref("materials").push({
+        title: titulo,
+        description: descricao,
+        fileUrl: link,
+        fileType: tipo,
+        createdAt: Date.now()
+      });
+
+      alert("Material salvo com sucesso!");
+      carregarMateriais();
+    }
+
+    function carregarMateriais() {
+      db.ref("materials").on("value", snap => {
+        const lista = document.getElementById("listaMateriais");
+        lista.innerHTML = "";
+
+        snap.forEach(child => {
+          const m = child.val();
+
+          lista.innerHTML += `
+            <div class="bg-white p-5 rounded-2xl shadow flex justify-between items-center">
+              <div>
+                <h3 class="font-semibold text-lg">${m.title}</h3>
+                <p class="text-gray-600 text-sm">${m.description}</p>
+              </div>
+              <button onclick="window.open('${m.fileUrl}', '_blank')"
+                class="bg-red-600 text-white px-4 py-2 rounded-xl hover:bg-red-500">
+                Abrir
+              </button>
+            </div>
+          `;
+        });
+      });
+    }
+
+    carregarMateriais();
+  </script>
+
+</body>
+</html>

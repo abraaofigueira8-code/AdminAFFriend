@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Compras — AFFriend Admin</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+
+<body class="bg-gray-100">
+
+  <!-- SIDEBAR S3 (RESPONSIVO, BRANCO, PREMIUM) -->
+<aside id="sidebar"
+  class="fixed top-0 left-0 h-full w-64 bg-white shadow-xl border-r border-gray-200 flex flex-col
+         transition-transform duration-300 -translate-x-full md:translate-x-0 z-50">
+
+  <div class="px-6 py-6 border-b border-gray-200 flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-bold text-red-600">AFFriend</h1>
+      <p class="text-gray-500 text-sm">Painel Administrativo</p>
+    </div>
+
+    <!-- Botão fechar (mobile) -->
+    <button onclick="toggleSidebar()" class="md:hidden text-gray-600 text-2xl">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+
+  <nav class="flex-1 px-4 py-6 space-y-1">
+
+    <button onclick="go('dashboard.html')"
+      class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-gray-700 hover:bg-gray-100 transition">
+      <i class="fa-solid fa-chart-line text-xl"></i>
+      <span>Dashboard</span>
+    </button>
+
+    <p class="text-xs text-gray-400 uppercase mt-6 mb-2 px-4">Conteúdo</p>
+
+    <button onclick="go('cursos.html')"
+      class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-gray-700 hover:bg-gray-100 transition">
+      <i class="fa-solid fa-book text-xl"></i>
+      <span>Cursos</span>
+    </button>
+
+    <button onclick="go('produtos.html')"
+      class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-gray-700 hover:bg-gray-100 transition">
+      <i class="fa-solid fa-box text-xl"></i>
+      <span>Produtos</span>
+    </button>
+
+    <button onclick="go('marketplace.html')"
+      class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-gray-700 hover:bg-gray-100 transition">
+      <i class="fa-solid fa-store text-xl"></i>
+      <span>Marketplace</span>
+    </button>
+
+    <p class="text-xs text-gray-400 uppercase mt-6 mb-2 px-4">Gestão</p>
+
+    <button onclick="go('usuarios.html')"
+      class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-gray-700 hover:bg-gray-100 transition">
+      <i class="fa-solid fa-users text-xl"></i>
+      <span>Usuários</span>
+    </button>
+
+    <button onclick="go('notificacoes.html')"
+      class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-gray-700 hover:bg-gray-100 transition">
+      <i class="fa-solid fa-bell text-xl"></i>
+      <span>Notificações</span>
+    </button>
+
+    <button onclick="go('compras.html')"
+      class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-gray-700 hover:bg-gray-100 transition">
+      <i class="fa-solid fa-credit-card text-xl"></i>
+      <span>Compras</span>
+    </button>
+
+      <button onclick="go('admin-materiais.html')"
+        class="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-red-600 text-white transition">
+        <i class="fa-solid fa-file text-xl"></i>
+        <span>Materiais</span>
+      </button>
+    <button onclick="go('logs.html')"
+      class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-gray-700 hover:bg-gray-100 transition">
+      <i class="fa-solid fa-file-lines text-xl"></i>
+      <span>Logs</span>
+    </button>
+
+  </nav>
+
+  <div class="px-6 py-4 border-t border-gray-200">
+    <button onclick="logout()"
+      class="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg transition">
+      Sair
+    </button>
+  </div>
+
+</aside>
+  <!-- NAVBAR RESPONSIVA PREMIUM -->
+<header class="fixed top-0 left-0 md:left-64 right-0 h-16 bg-white shadow flex items-center justify-between px-4 md:px-8 border-b z-40">
+
+  <!-- Botão Menu (Mobile) -->
+  <button onclick="toggleSidebar()" class="md:hidden text-2xl text-gray-700">
+    <i class="fa-solid fa-bars"></i>
+  </button>
+
+  <!-- Título da Página -->
+  <h2 id="pageTitle" class="text-lg md:text-xl font-semibold text-gray-700">
+    <!-- O JS pode alterar este título dinamicamente -->
+  </h2>
+
+  <!-- Perfil do Admin -->
+  <div class="flex items-center gap-3">
+    <i class="fas fa-user-circle text-3xl text-gray-600"></i>
+    <span id="adminEmail" class="hidden sm:block text-gray-700 font-medium"></span>
+  </div>
+
+</header>
+  <!-- CONTEÚDO -->
+<main class="md:ml-64 mt-16 px-4 md:px-8 pb-10">
+    <h1 class="text-3xl font-bold text-gray-800 mb-8">Gestão de Compras</h1>
+
+    <!-- LISTA DE COMPRAS -->
+    <div id="ordersList" class="space-y-4">
+      <p class="text-gray-500">Carregando compras...</p>
+    </div>
+
+  </main>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+  <script src="firebase-config.js"></script>
+
+  <script>
+    firebase.auth().onAuthStateChanged(async admin => {
+      if (!admin) return window.location.href = "index.html";
+      document.getElementById("adminEmail").textContent = admin.email;
+      loadOrders();
+    });
+
+    async function loadOrders() {
+      const container = document.getElementById("ordersList");
+      const snap = await firebase.database().ref("purchases").once("value");
+
+      container.innerHTML = "";
+
+      if (!snap.exists()) {
+        container.innerHTML = `<p class='text-gray-500'>Nenhuma compra encontrada.</p>`;
+        return;
+      }
+
+      snap.forEach(s => {
+        const o = s.val();
+        const id = s.key;
+
+        container.innerHTML += `
+          <div class="bg-white shadow rounded-xl p-5 flex justify-between items-center">
+
+            <div>
+              <h3 class="text-lg font-semibold text-gray-800">Compra #${id}</h3>
+              <p class="text-gray-500 text-sm">Usuário: ${o.userEmail}</p>
+              <p class="text-gray-500 text-sm">Total: Kz ${Number(o.total).toLocaleString()}</p>
+              <p class="text-gray-400 text-xs mt-1">Data: ${new Date(o.timestamp).toLocaleString()}</p>
+
+              <span class="text-xs px-3 py-1 rounded-full mt-2 inline-block ${
+                o.status === "approved"
+                  ? "bg-green-100 text-green-700"
+                  : o.status === "rejected"
+                  ? "bg-red-100 text-red-700"
+                  : "bg-yellow-100 text-yellow-700"
+              }">
+                ${
+                  o.status === "approved"
+                    ? "Aprovada"
+                    : o.status === "rejected"
+                    ? "Rejeitada"
+                    : "Pendente"
+                }
+              </span>
+            </div>
+
+            <div class="flex gap-2">
+              <button onclick="viewOrder('${id}')"
+                class="bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded-lg">
+                Detalhes
+              </button>
+
+              <button onclick="approveOrder('${id}')"
+                class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
+                Aprovar
+              </button>
+
+              <button onclick="rejectOrder('${id}')"
+                class="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg">
+                Rejeitar
+              </button>
+
+              <button onclick="deleteOrder('${id}')"
+                class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
+                Apagar
+              </button>
+            </div>
+
+          </div>
+        `;
+      });
+    }
+
+    function viewOrder(id) {
+      window.location.href = `detalhes-compra.html?id=${id}`;
+    }
+
+    function approveOrder(id) {
+      firebase.database().ref("purchases/" + id).update({ status: "approved" });
+      alert("Compra aprovada!");
+      loadOrders();
+    }
+
+    function rejectOrder(id) {
+      firebase.database().ref("purchases/" + id).update({ status: "rejected" });
+      alert("Compra rejeitada!");
+      loadOrders();
+    }
+
+    function deleteOrder(id) {
+      if (!confirm("Tem certeza que deseja apagar esta compra?")) return;
+
+      firebase.database().ref("purchases/" + id).remove();
+      alert("Compra apagada.");
+      loadOrders();
+    }
+  
+   /*DASHBOARD*/
+  function go(page) {
+      window.location.href = page;
+    }
+
+    function logout() {
+      firebase.auth().signOut().then(() => {
+        window.location.href = "index.html";
+      });
+    }
+  
+  //SIDEBAR
+  function toggleSidebar() {
+  document.getElementById("sidebar").classList.toggle("-translate-x-full");
+}
+  const titles = {
+  "dashboard.html": "Dashboard",
+  "cursos.html": "Cursos",
+  "produtos.html": "Produtos",
+  "marketplace.html": "Marketplace",
+  "usuarios.html": "Usuários",
+  "notificacoes.html": "Notificações",
+  "compras.html": "Compras",
+  "logs.html": "Logs",
+  "configuracoes.html": "Configurações"
+};
+
+const page = location.pathname.split("/").pop();
+document.getElementById("pageTitle").textContent = titles[page] || "Admin";
+
+  </script>
+</div>
+</body>
+</html>

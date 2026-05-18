@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Configurações — AFFriend Admin</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+
+<body class="bg-gray-100">
+
+  <!-- SIDEBAR S3 (RESPONSIVO, BRANCO, PREMIUM) -->
+<aside id="sidebar"
+  class="fixed top-0 left-0 h-full w-64 bg-white shadow-xl border-r border-gray-200 flex flex-col
+         transition-transform duration-300 -translate-x-full md:translate-x-0 z-50">
+
+  <div class="px-6 py-6 border-b border-gray-200 flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-bold text-red-600">AFFriend</h1>
+      <p class="text-gray-500 text-sm">Painel Administrativo</p>
+    </div>
+
+    <!-- Botão fechar (mobile) -->
+    <button onclick="toggleSidebar()" class="md:hidden text-gray-600 text-2xl">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+
+  <nav class="flex-1 px-4 py-6 space-y-1">
+
+    <button onclick="go('dashboard.html')"
+      class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-gray-700 hover:bg-gray-100 transition">
+      <i class="fa-solid fa-chart-line text-xl"></i>
+      <span>Dashboard</span>
+    </button>
+
+    <p class="text-xs text-gray-400 uppercase mt-6 mb-2 px-4">Conteúdo</p>
+
+    <button onclick="go('cursos.html')"
+      class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-gray-700 hover:bg-gray-100 transition">
+      <i class="fa-solid fa-book text-xl"></i>
+      <span>Cursos</span>
+    </button>
+
+    <button onclick="go('produtos.html')"
+      class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-gray-700 hover:bg-gray-100 transition">
+      <i class="fa-solid fa-box text-xl"></i>
+      <span>Produtos</span>
+    </button>
+
+    <button onclick="go('marketplace.html')"
+      class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-gray-700 hover:bg-gray-100 transition">
+      <i class="fa-solid fa-store text-xl"></i>
+      <span>Marketplace</span>
+    </button>
+
+    <p class="text-xs text-gray-400 uppercase mt-6 mb-2 px-4">Gestão</p>
+
+    <button onclick="go('usuarios.html')"
+      class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-gray-700 hover:bg-gray-100 transition">
+      <i class="fa-solid fa-users text-xl"></i>
+      <span>Usuários</span>
+    </button>
+
+    <button onclick="go('notificacoes.html')"
+      class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-gray-700 hover:bg-gray-100 transition">
+      <i class="fa-solid fa-bell text-xl"></i>
+      <span>Notificações</span>
+    </button>
+
+    <button onclick="go('compras.html')"
+      class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-gray-700 hover:bg-gray-100 transition">
+      <i class="fa-solid fa-credit-card text-xl"></i>
+      <span>Compras</span>
+    </button>
+
+      <button onclick="go('admin-materiais.html')"
+        class="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-red-600 text-white transition">
+        <i class="fa-solid fa-file text-xl"></i>
+        <span>Materiais</span>
+      </button>
+    
+    <button onclick="go('logs.html')"
+      class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-gray-700 hover:bg-gray-100 transition">
+      <i class="fa-solid fa-file-lines text-xl"></i>
+      <span>Logs</span>
+    </button>
+
+  </nav>
+
+  <div class="px-6 py-4 border-t border-gray-200">
+    <button onclick="logout()"
+      class="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg transition">
+      Sair
+    </button>
+  </div>
+
+</aside>
+  <!-- NAVBAR RESPONSIVA PREMIUM -->
+<header class="fixed top-0 left-0 md:left-64 right-0 h-16 bg-white shadow flex items-center justify-between px-4 md:px-8 border-b z-40">
+
+  <!-- Botão Menu (Mobile) -->
+  <button onclick="toggleSidebar()" class="md:hidden text-2xl text-gray-700">
+    <i class="fa-solid fa-bars"></i>
+  </button>
+
+  <!-- Título da Página -->
+  <h2 id="pageTitle" class="text-lg md:text-xl font-semibold text-gray-700">
+    <!-- O JS pode alterar este título dinamicamente -->
+  </h2>
+
+  <!-- Perfil do Admin -->
+  <div class="flex items-center gap-3">
+    <i class="fas fa-user-circle text-3xl text-gray-600"></i>
+    <span id="adminEmail" class="hidden sm:block text-gray-700 font-medium"></span>
+  </div>
+
+</header>
+  <!-- CONTEÚDO -->
+<main class="md:ml-64 mt-16 px-4 md:px-8 pb-10">
+
+    <!-- PERFIL -->
+    <section class="bg-white shadow rounded-xl p-6">
+      <h3 class="text-xl font-bold text-gray-800 mb-4">Perfil do Administrador</h3>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="text-gray-600 text-sm">Nome</label>
+          <input id="adminName" class="w-full mt-1 p-3 border rounded-lg" type="text">
+        </div>
+
+        <div>
+          <label class="text-gray-600 text-sm">Email</label>
+          <input id="adminEmailInput" class="w-full mt-1 p-3 border rounded-lg bg-gray-100" type="text" disabled>
+        </div>
+      </div>
+
+      <button onclick="saveProfile()" class="mt-6 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg">
+        Guardar Perfil
+      </button>
+    </section>
+
+    <!-- PLATAFORMA -->
+    <section class="bg-white shadow rounded-xl p-6">
+      <h3 class="text-xl font-bold text-gray-800 mb-4">Configurações da Plataforma</h3>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="text-gray-600 text-sm">Nome da Plataforma</label>
+          <input id="platformName" class="w-full mt-1 p-3 border rounded-lg" type="text">
+        </div>
+
+        <div>
+          <label class="text-gray-600 text-sm">Email de Suporte</label>
+          <input id="supportEmail" class="w-full mt-1 p-3 border rounded-lg" type="text">
+        </div>
+
+        <div>
+          <label class="text-gray-600 text-sm">WhatsApp de Suporte</label>
+          <input id="supportWhatsapp" class="w-full mt-1 p-3 border rounded-lg" type="text">
+        </div>
+
+        <div>
+          <label class="text-gray-600 text-sm">URL do Site</label>
+          <input id="siteURL" class="w-full mt-1 p-3 border rounded-lg" type="text">
+        </div>
+      </div>
+
+      <button onclick="savePlatform()" class="mt-6 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg">
+        Guardar Configurações
+      </button>
+    </section>
+
+    <!-- SEGURANÇA -->
+    <section class="bg-white shadow rounded-xl p-6">
+      <h3 class="text-xl font-bold text-gray-800 mb-4">Segurança</h3>
+
+      <button onclick="addAdmin()" class="bg-gray-800 hover:bg-black text-white px-6 py-3 rounded-lg">
+        Adicionar Novo Administrador
+      </button>
+    </section>
+
+  </main>
+
+  <!-- MODAL ADICIONAR ADMIN -->
+<div id="modalAdmin" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center z-50">
+  <div class="bg-white w-full max-w-lg rounded-xl shadow-xl p-6">
+    <h2 class="text-2xl font-bold text-gray-800 mb-4">Adicionar Novo Administrador</h2>
+
+    <div class="space-y-4">
+      <div>
+        <label class="text-gray-600 text-sm">Nome</label>
+        <input id="newAdminName" class="w-full mt-1 p-3 border rounded-lg" type="text">
+      </div>
+
+      <div>
+        <label class="text-gray-600 text-sm">Email</label>
+        <input id="newAdminEmail" class="w-full mt-1 p-3 border rounded-lg" type="email">
+      </div>
+
+      <div>
+        <label class="text-gray-600 text-sm">Senha</label>
+        <input id="newAdminPass" class="w-full mt-1 p-3 border rounded-lg" type="password">
+      </div>
+
+      <div>
+        <label class="text-gray-600 text-sm">Confirmar Senha</label>
+        <input id="newAdminPass2" class="w-full mt-1 p-3 border rounded-lg" type="password">
+      </div>
+    </div>
+
+    <div class="flex justify-end gap-4 mt-6">
+      <button onclick="closeAdminModal()" class="px-5 py-2 bg-gray-200 rounded-lg">Cancelar</button>
+      <button onclick="createAdmin()" class="px-5 py-2 bg-red-600 text-white rounded-lg">Criar Admin</button>
+    </div>
+  </div>
+</div>
+  
+  
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+  <script src="firebase-config.js"></script>
+
+  <script>
+    firebase.auth().onAuthStateChanged(async admin => {
+      if (!admin) return go("admin-login.html");
+
+      document.getElementById("adminEmail").textContent = admin.email;
+      document.getElementById("adminEmailInput").value = admin.email;
+
+      const snap = await firebase.database().ref("users/" + admin.uid).get();
+      const data = snap.val();
+
+      document.getElementById("adminName").value = data.name || "";
+    });
+
+    function saveProfile() {
+      const name = document.getElementById("adminName").value;
+      const uid = firebase.auth().currentUser.uid;
+
+      firebase.database().ref("users/" + uid).update({ name });
+      alert("Perfil atualizado!");
+    }
+
+    function savePlatform() {
+      const data = {
+        platformName: document.getElementById("platformName").value,
+        supportEmail: document.getElementById("supportEmail").value,
+        supportWhatsapp: document.getElementById("supportWhatsapp").value,
+        siteURL: document.getElementById("siteURL").value
+      };
+
+      firebase.database().ref("config").update(data);
+      alert("Configurações guardadas!");
+    }
+
+    function addAdmin() {
+      alert("Função futura: adicionar novo administrador.");
+    }
+
+    function go(page) {
+      window.location.href = page;
+    }
+
+    function logout() {
+      firebase.auth().signOut().then(() => go("admin-login.html"));
+    }
+  //MODAL
+  function addAdmin() {
+  document.getElementById("modalAdmin").classList.remove("hidden");
+}
+function closeAdminModal() {
+  document.getElementById("modalAdmin").classList.add("hidden");
+}
+  
+  
+  //CRIAR ADM
+  async function createAdmin() {
+  const name = document.getElementById("newAdminName").value.trim();
+  const email = document.getElementById("newAdminEmail").value.trim();
+  const pass = document.getElementById("newAdminPass").value;
+  const pass2 = document.getElementById("newAdminPass2").value;
+
+  if (!name || !email || !pass || !pass2) {
+    alert("Preencha todos os campos.");
+    return;
+  }
+
+  if (pass !== pass2) {
+    alert("As senhas não coincidem.");
+    return;
+  }
+
+  try {
+    // Criar o novo admin no Firebase Auth
+    const cred = await firebase.auth().createUserWithEmailAndPassword(email, pass);
+    const uid = cred.user.uid;
+
+    // Criar o nó no Realtime Database
+    await firebase.database().ref("users/" + uid).set({
+      name: name,
+      email: email,
+      role: "admin",
+      status: "active",
+      createdAt: Date.now()
+    });
+
+    // Registrar log administrativo
+    const adminUID = firebase.auth().currentUser.uid;
+    await firebase.database().ref("logs").push({
+      type: "admin_created",
+      by: adminUID,
+      target: uid,
+      timestamp: Date.now()
+    });
+
+    alert("Administrador criado com sucesso!");
+    closeAdminModal();
+
+  } catch (error) {
+    alert("Erro: " + error.message);
+  }
+}
+  
+  //SIDEBAR
+  function toggleSidebar() {
+  document.getElementById("sidebar").classList.toggle("-translate-x-full");
+}
+  const titles = {
+  "dashboard.html": "Dashboard",
+  "cursos.html": "Cursos",
+  "produtos.html": "Produtos",
+  "marketplace.html": "Marketplace",
+  "usuarios.html": "Usuários",
+  "notificacoes.html": "Notificações",
+  "compras.html": "Compras",
+  "logs.html": "Logs",
+  "configuracoes.html": "Configurações"
+};
+
+const page = location.pathname.split("/").pop();
+document.getElementById("pageTitle").textContent = titles[page] || "Admin";
+
+  </script>
+
+</body>
+</html>

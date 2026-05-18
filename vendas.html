@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vendas • AFFriend Admin</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Ícones -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+
+<body class="bg-gray-100">
+
+<!-- SIDEBAR S3 -->
+<aside id="sidebar"
+  class="fixed top-0 left-0 h-full w-64 bg-white shadow-xl border-r border-gray-200 flex flex-col
+         transition-transform duration-300 -translate-x-full md:translate-x-0 z-50">
+
+  <div class="px-6 py-6 border-b border-gray-200 flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-bold text-red-600">AFFriend</h1>
+      <p class="text-gray-500 text-sm">Painel Administrativo</p>
+    </div>
+
+    <button onclick="toggleSidebar()" class="md:hidden text-gray-600 text-2xl">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+
+  <nav class="flex-1 px-4 py-6 space-y-1">
+
+    <button onclick="go('dashboard.html')" class="menu-btn">
+      <i class="fa-solid fa-chart-line text-xl"></i> Dashboard
+    </button>
+
+    <p class="section-title">Conteúdo</p>
+
+    <button onclick="go('cursos.html')" class="menu-btn">
+      <i class="fa-solid fa-book text-xl"></i> Cursos
+    </button>
+
+    <button onclick="go('produtos.html')" class="menu-btn">
+      <i class="fa-solid fa-box text-xl"></i> Produtos
+    </button>
+
+    <button onclick="go('marketplace.html')" class="menu-btn">
+      <i class="fa-solid fa-store text-xl"></i> Marketplace
+    </button>
+
+    <p class="section-title">Gestão</p>
+
+    <button onclick="go('usuarios.html')" class="menu-btn">
+      <i class="fa-solid fa-users text-xl"></i> Usuários
+    </button>
+
+    <button onclick="go('notificacoes.html')" class="menu-btn">
+      <i class="fa-solid fa-bell text-xl"></i> Notificações
+    </button>
+
+    <button onclick="go('compras.html')" class="menu-btn">
+      <i class="fa-solid fa-credit-card text-xl"></i> Compras
+    </button>
+
+    <button onclick="go('vendas.html')" class="menu-btn bg-red-600 text-white">
+      <i class="fa-solid fa-money-bill-trend-up text-xl"></i> Vendas
+    </button>
+
+    <button onclick="go('logs.html')" class="menu-btn">
+      <i class="fa-solid fa-file-lines text-xl"></i> Logs
+    </button>
+
+  </nav>
+
+  <div class="px-6 py-4 border-t border-gray-200">
+    <button onclick="logout()" class="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg transition">
+      Sair
+    </button>
+  </div>
+
+</aside>
+
+<!-- NAVBAR -->
+<header class="fixed top-0 left-0 md:left-64 right-0 h-16 bg-white shadow flex items-center justify-between px-4 md:px-8 border-b z-40">
+
+  <button onclick="toggleSidebar()" class="md:hidden text-2xl text-gray-700">
+    <i class="fa-solid fa-bars"></i>
+  </button>
+
+  <h2 id="pageTitle" class="text-lg md:text-xl font-semibold text-gray-700">
+    Painel de Vendas
+  </h2>
+
+  <div class="flex items-center gap-3">
+    <i class="fas fa-user-circle text-3xl text-gray-600"></i>
+    <span id="adminEmail" class="hidden sm:block text-gray-700 font-medium"></span>
+  </div>
+
+</header>
+
+<!-- CONTEÚDO -->
+<main class="md:ml-64 mt-20 px-4 md:px-8 pb-10">
+
+  <!-- CARDS -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+
+    <div class="bg-white shadow rounded-xl p-6">
+      <h3 class="text-gray-500 text-sm">Total de Vendas</h3>
+      <p id="totalVendas" class="text-3xl font-bold text-gray-800">0</p>
+    </div>
+
+    <div class="bg-white shadow rounded-xl p-6">
+      <h3 class="text-gray-500 text-sm">Receita Total</h3>
+      <p id="totalReceita" class="text-3xl font-bold text-green-600">0 Kz</p>
+    </div>
+
+    <div class="bg-white shadow rounded-xl p-6">
+      <h3 class="text-gray-500 text-sm">Produtos Vendidos</h3>
+      <p id="totalProdutos" class="text-3xl font-bold text-gray-800">0</p>
+    </div>
+
+  </div>
+
+  <!-- FILTROS -->
+  <div class="bg-white shadow rounded-xl p-6 mb-10">
+    <h3 class="text-xl font-semibold mb-4">Filtros</h3>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+      <input id="filterProduto" type="text" placeholder="Filtrar por produto"
+        class="px-4 py-3 border rounded-lg w-full"/>
+
+      <input id="filterVendedor" type="text" placeholder="Filtrar por vendedor"
+        class="px-4 py-3 border rounded-lg w-full"/>
+
+      <input id="filterData" type="date"
+        class="px-4 py-3 border rounded-lg w-full"/>
+
+    </div>
+
+    <button onclick="exportCSV()"
+      class="mt-6 bg-gray-800 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition">
+      <i class="fa-solid fa-file-csv mr-2"></i> Exportar CSV
+    </button>
+  </div>
+
+  <!-- TABELA -->
+  <div class="bg-white shadow rounded-xl p-6 overflow-x-auto">
+    <table class="w-full text-left">
+      <thead>
+        <tr class="border-b">
+          <th class="py-3">Produto</th>
+          <th class="py-3">Preço</th>
+          <th class="py-3">Comprador</th>
+          <th class="py-3">Vendedor</th>
+          <th class="py-3">Data</th>
+        </tr>
+      </thead>
+      <tbody id="tabelaVendas"></tbody>
+    </table>
+  </div>
+
+</main>
+
+<script src="vendas.js"></script>
+
+<script>
+  
+  const db = firebase.database();
+let vendas = [];
+
+async function carregarVendas() {
+  const snap = await db.ref("compras").once("value");
+  if (!snap.exists()) return;
+
+  vendas = [];
+
+  snap.forEach(child => {
+    vendas.push(child.val());
+  });
+
+  atualizarDashboard();
+  renderTabela(vendas);
+}
+
+function atualizarDashboard() {
+  document.getElementById("totalVendas").textContent = vendas.length;
+
+  const receita = vendas.reduce((acc, v) => acc + Number(v.price), 0);
+  document.getElementById("totalReceita").textContent = receita + " Kz";
+
+  document.getElementById("totalProdutos").textContent = vendas.length;
+}
+
+function renderTabela(lista) {
+  const tbody = document.getElementById("tabelaVendas");
+  tbody.innerHTML = "";
+
+  lista.forEach(v => {
+    tbody.innerHTML += `
+      <tr class="border-b">
+        <td class="py-3">${v.productTitle}</td>
+        <td class="py-3">${v.price} Kz</td>
+        <td class="py-3">${v.buyerEmail}</td>
+        <td class="py-3">${v.sellerEmail}</td>
+        <td class="py-3">${new Date(v.createdAt).toLocaleDateString()}</td>
+      </tr>
+    `;
+  });
+}
+
+function exportCSV() {
+  let csv = "Produto,Preço,Comprador,Vendedor,Data\n";
+
+  vendas.forEach(v => {
+    csv += `${v.productTitle},${v.price},${v.buyerEmail},${v.sellerEmail},${new Date(v.createdAt).toLocaleDateString()}\n`;
+  });
+
+  const blob = new Blob([csv], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "vendas.csv";
+  a.click();
+}
+
+carregarVendas();
+  
+  
+function go(page){ window.location.href = page }
+function toggleSidebar(){ document.getElementById("sidebar").classList.toggle("-translate-x-full") }
+firebase.auth().onAuthStateChanged(admin=>{
+  if(!admin) return window.location.href="index.html"
+  document.getElementById("adminEmail").textContent = admin.email
+})
+</script>
+
+</body>
+</html>

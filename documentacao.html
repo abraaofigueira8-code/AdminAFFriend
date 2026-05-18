@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>AFFriend Admin — Documentação Oficial</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body>
+  <h1>AFFriend Admin — Documentação Oficial (Dev‑Friendly)</h1>
+
+  <h2>1. Introdução</h2>
+  <p>O <strong>AFFriend Admin</strong> é o painel administrativo oficial do ecossistema AFFriend.
+  Ele foi projetado para ser:</p>
+  <ul>
+    <li><strong>Rápido</strong></li>
+    <li><strong>Modular</strong></li>
+    <li><strong>Fácil de manter</strong></li>
+    <li><strong>Intuitivo para novos devs</strong></li>
+    <li><strong>Escalável para novos módulos</strong></li>
+  </ul>
+  <p>O objetivo é permitir que administradores, gestores e desenvolvedores controlem todo o sistema de forma simples e eficiente.</p>
+
+  <h2>2. Instalação e Configuração</h2>
+  <h3>Requisitos mínimos</h3>
+  <p><strong>Servidor</strong></p>
+  <ul>
+    <li>PHP 8+ ou Node 18+ (dependendo do backend)</li>
+    <li>MySQL/MariaDB ou PostgreSQL</li>
+    <li>Nginx ou Apache</li>
+  </ul>
+  <p><strong>Frontend</strong></p>
+  <ul>
+    <li>HTML5</li>
+    <li>CSS3</li>
+    <li>JavaScript ES6</li>
+    <li>Bootstrap 5 (ou framework equivalente usado no projeto)</li>
+  </ul>
+
+  <h3>Instalação</h3>
+  <ol>
+    <li>Clone o repositório:
+      <pre><code>git clone https://github.com/affriend/admin.git</code></pre>
+    </li>
+    <li>Instale dependências (se houver):
+      <pre><code>npm install</code></pre>
+    </li>
+    <li>Configure o arquivo <code>.env</code>:
+      <ul>
+        <li>URL base</li>
+        <li>Credenciais do banco</li>
+        <li>Chaves de API</li>
+      </ul>
+    </li>
+    <li>Inicie o servidor:
+      <pre><code>npm run dev</code></pre>
+      <p>ou</p>
+      <pre><code>php artisan serve</code></pre>
+    </li>
+  </ol>
+
+  <h3>Primeiro login</h3>
+  <ul>
+    <li>Acesse: <code>/index.html</code></li>
+    <li>Usuário padrão: <code>admin@affriend.com</code></li>
+    <li>Senha padrão: <code>admin123</code></li>
+  </ul>
+
+  <h2>3. Estrutura do Projeto</h2>
+  <pre><code>/assets
+    /css
+    /js
+    /img
+/components
+/layout
+    sidebar.html
+    header.html
+/pages
+    dashboard.html
+    afiliados.html
+    campanhas.html
+    pagamentos.html
+    configuracoes.html
+</code></pre>
+
+  <h3>Sidebar embutido</h3>
+  <ul>
+    <li>Carregado automaticamente em todas as páginas</li>
+    <li>Mantém consistência visual</li>
+    <li>Evita duplicação de código</li>
+  </ul>
+
+  <h3>Dashboard</h3>
+  <ul>
+    <li>Cards dinâmicos</li>
+    <li>Gráficos (Chart.js ou ApexCharts)</li>
+    <li>KPIs principais</li>
+  </ul>
+
+  <h2>4. Autenticação e Segurança</h2>
+  <h3>Fluxo de login</h3>
+  <ol>
+    <li>Usuário envia email + senha</li>
+    <li>Backend valida credenciais</li>
+    <li>Token de sessão é criado</li>
+    <li>Usuário é redirecionado ao dashboard</li>
+  </ol>
+
+  <h3>Proteção de rotas</h3>
+  <ul>
+    <li>Todas as páginas dentro de <code>/pages</code> exigem sessão ativa</li>
+    <li>Middleware verifica token antes de renderizar conteúdo</li>
+  </ul>
+
+  <h3>Recuperação de senha</h3>
+  <ul>
+    <li>Envio de email com link temporário</li>
+    <li>Token expira em 15 minutos</li>
+  </ul>
+
+  <h2>5. Navegação Geral</h2>
+  <h3>Sidebar</h3>
+  <ul>
+    <li>Links para todos os módulos</li>
+    <li>Ícones consistentes (Bootstrap Icons / FontAwesome)</li>
+    <li>Indicação de página ativa</li>
+  </ul>
+
+  <h3>Header</h3>
+  <ul>
+    <li>Nome do usuário</li>
+    <li>Botão de logout</li>
+    <li>Notificações (se ativado)</li>
+  </ul>
+
+  <h3>Breadcrumbs</h3>
+  <ul>
+    <li>Mostra o caminho atual</li>
+    <li>Ajuda na navegação rápida</li>
+  </ul>
+
+  <h2>6. Módulos do Sistema</h2>
+  <p>Cada módulo segue o mesmo padrão:</p>
+  <ul>
+    <li>Tabela principal</li>
+    <li>Botão “Adicionar”</li>
+    <li>Modal de criação/edição</li>
+    <li>Validações</li>
+    <li>Ações rápidas (editar, excluir, ver detalhes)</li>
+  </ul>
+
+  <h3>6.1 — Gestão de Afiliados</h3>
+  <ul>
+    <li>Criar afiliados</li>
+    <li>Editar dados</li>
+    <li>Ver estatísticas individuais</li>
+    <li>Ativar/desativar contas</li>
+  </ul>
+  <p><strong>Campos principais</strong></p>
+  <ul>
+    <li>Nome</li>
+    <li>Email</li>
+    <li>País</li>
+    <li>Status</li>
+    <li>Data de registro</li>
+  </ul>
+
+  <h3>6.2 — Gestão de Campanhas</h3>
+  <ul>
+    <li>Criar campanhas</li>
+    <li>Definir payout</li>
+    <li>Atribuir afiliados</li>
+    <li>Ativar/desativar</li>
+  </ul>
+  <p><strong>Campos</strong></p>
+  <ul>
+    <li>Nome da campanha</li>
+    <li>URL de destino</li>
+    <li>Comissão</li>
+    <li>Status</li>
+  </ul>
+
+  <h3>6.3 — Leads</h3>
+  <ul>
+    <li>Listagem de leads</li>
+    <li>Filtros avançados</li>
+    <li>Origem da campanha</li>
+    <li>Status do lead</li>
+  </ul>
+
+  <h3>6.4 — Pagamentos</h3>
+  <ul>
+    <li>Histórico de pagamentos</li>
+    <li>Solicitações pendentes</li>
+    <li>Aprovação manual</li>
+    <li>Exportação CSV (se implementado)</li>
+  </ul>
+
+  <h3>6.5 — Configurações</h3>
+  <ul>
+    <li>Logotipo</li>
+    <li>Cores do painel</li>
+    <li>Informações da empresa</li>
+    <li>Chaves de API</li>
+  </ul>
+
+  <h2>7. API (Opcional)</h2>
+  <h3>Autenticação</h3>
+  <pre><code>POST /api/login
+{
+  "email": "admin@affriend.com",
+  "password": "admin123"
+}
+</code></pre>
+
+  <h3>Exemplo de resposta</h3>
+  <pre><code>{
+  "token": "abc123xyz",
+  "user": { ... }
+}
+</code></pre>
+
+  <h3>Endpoints comuns</h3>
+  <ul>
+    <li><code>/api/afiliados</code></li>
+    <li><code>/api/campanhas</code></li>
+    <li><code>/api/leads</code></li>
+    <li><code>/api/pagamentos</code></li>
+  </ul>
+
+  <h2>8. Personalização</h2>
+  <h3>Alterar cores</h3>
+  <p>Arquivo: <code>/assets/css/theme.css</code></p>
+
+  <h3>Alterar logotipo</h3>
+  <p>Pasta: <code>/assets/img/logo.png</code></p>
+
+  <h3>Criar novas páginas</h3>
+  <ol>
+    <li>Copie um template de <code>/pages</code></li>
+    <li>Importe o sidebar e header</li>
+    <li>Adicione o conteúdo</li>
+  </ol>
+
+  <h2>9. Manutenção e Atualizações</h2>
+  <h3>Atualizar o painel</h3>
+  <pre><code>git pull
+npm run build
+</code></pre>
+
+  <h3>Limpar cache</h3>
+  <pre><code>php artisan cache:clear
+</code></pre>
+
+  <h3>Backup</h3>
+  <ul>
+    <li>Banco de dados</li>
+    <li>Pasta <code>/uploads</code></li>
+  </ul>
+
+  <h2>10. FAQ</h2>
+  <p><strong>“O login não funciona”</strong><br />
+  → Verifique credenciais e conexão com o banco.</p>
+
+  <p><strong>“Sidebar não aparece”</strong><br />
+  → Confirme se o include está correto no HTML.</p>
+
+  <p><strong>“Gráficos não carregam”</strong><br />
+  → Verifique se o Chart.js/ApexCharts está importado.</p>
+
+  <h2>11. Roadmap</h2>
+  <ul>
+    <li>Modo escuro</li>
+    <li>Dashboard personalizável</li>
+    <li>Sistema de permissões avançado</li>
+    <li>API pública para afiliados</li>
+    <li>Webhooks</li>
+  </ul>
+
+  <h2>12. Créditos</h2>
+  <ul>
+    <li>Design: Abraão</li>
+    <li>Desenvolvimento: Equipe AFFriend</li>
+    <li>Documentação: AFFriend Docs</li>
+  </ul>
+</body>
+</html>
